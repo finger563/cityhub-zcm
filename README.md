@@ -30,8 +30,7 @@ $ cd cppzmq
 $ sudo cp *.hpp /usr/local/include/.
 ```
 
-Install ZCM
-------------
+* Install ZCM
 
 ```bash
 $ git clone https://github.com/pranav-srinivas-kumar/zcm
@@ -40,6 +39,13 @@ $ make
 $ sudo make install
 $ sudo ldconfig
 ```
+
+* Install cpprestsdk
+
+[CPPRESTSDK](http://github.com/Microsoft/cpprestsdk) is reqiured for
+the REST interaction with cityhub-sdk.  Please follow the instructions
+[here](http://github.com/Microsoft/cpprestsdk/wiki/How-to-build-for-Linux)
+here for building and installing CPPRESTSDK.
 
 Running this Example
 -----------------
