@@ -40,9 +40,9 @@ namespace zcm {
   void sensor_1::timer_function() {
     int spaces = 0;
 
-    http_client client(U("http://129.59.105.153"));
+    http_client client(U("http://129.59.105.153:9000"));
     uri_builder builder(U("/api/devices/ch1/AvailableParkingSpaces"));
-    builder.set_port(9000);
+    //builder.set_port(9000);
     //builder.append_query(U("q"), U("Casablanca CodePlex"));
     pplx::task<void> requestTask = client.request(methods::GET, builder.to_string())
       .then([=](http_response response)
