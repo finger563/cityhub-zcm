@@ -32,7 +32,8 @@ namespace zcm {
    * Bind this operation to a periodic timer in the JSON configuration
    */     
   void sensor_2::timer_function() {
-    publisher("publisher_port")->send("sensor_2");
+    int spaces = 0;
+    publisher("sensor_2_pub")->send(std::to_string(spaces));
   }
 }
 

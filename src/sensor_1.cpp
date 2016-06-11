@@ -42,23 +42,29 @@ namespace zcm {
 
     http_client client(U("http://129.59.105.153:9000"));
     uri_builder builder(U("/api/devices/ch1/AvailableParkingSpaces"));
-    //builder.set_port(9000);
-    //builder.append_query(U("q"), U("Casablanca CodePlex"));
-    pplx::task<void> requestTask = client.request(methods::GET, builder.to_string())
+    pplx::task<int> requestTask = client.request(methods::GET, builder.to_string())
       .then([=](http_response response)
 	    {
 	      std::cout << "Received response status code: " << response.status_code() << std::endl;
+	      return response.extract_string();
+	    })
+      .then([=](std::string body)
+	    {
+	      std::cout << "Received response body: " << body << std::endl;
+	      Json::Value root;
+	      Json::Reader jsonReader;
+	      return root["value"].asInt();
 	    });
      try 
       {
-	requestTask.wait();
+	spaces = requestTask.wait();
       }
     catch (const std::exception &e)
       {
 	std::cout << "Error: " << e.what();
       }
-      
-     publisher("publisher_port")->send(std::to_string(spaces));
+     std::cout << "Got ch1 parking spaces available: " << spaces << std::endl;
+     publisher("sensor_1_pub")->send(std::to_string(spaces));
   }
 }
 
