@@ -69,7 +69,7 @@
 		    "Function": "sensor_2_sub_operation",
 		    "Endpoints" : ["tcp://127.0.0.1:5556"]
 		}
-	    ] 
+	    ],
 
 	    "Publishers" : [
 		{

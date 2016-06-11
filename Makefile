@@ -9,7 +9,7 @@ TEST_CONFIG_DIR=config
 all:
 	mkdir -p $(TEST_BUILD_DIR)
 	cp -r $(TEST_CONFIG_DIR)/* $(TEST_BUILD_DIR)/.
-	g++ -fPIC -shared $(TEST_SOURCE_DIR)/sensor_1.cpp -o $(TEST_BUILD_DIR)/sensor_1.so -I$(TEST_INCLUDE_DIR) -std=c++11 -pthread -I$(ZCM_HEADERS) -L$(ZCM_LIBRARY) -lzcm -lzmq -lboost_filesystem
+	g++ -fPIC -shared $(TEST_SOURCE_DIR)/sensor_1.cpp -o $(TEST_BUILD_DIR)/sensor_1.so -I$(TEST_INCLUDE_DIR) -std=c++11 -pthread -I$(ZCM_HEADERS) -L$(ZCM_LIBRARY) -lzcm -lzmq -lboost_filesystem -lcpprest
 	g++ -fPIC -shared $(TEST_SOURCE_DIR)/sensor_2.cpp -o $(TEST_BUILD_DIR)/sensor_2.so -I$(TEST_INCLUDE_DIR) -std=c++11 -pthread -I$(ZCM_HEADERS) -L$(ZCM_LIBRARY) -lzcm -lzmq -lboost_filesystem
 	g++ -fPIC -shared $(TEST_SOURCE_DIR)/aggregator.cpp -o $(TEST_BUILD_DIR)/aggregator.so -I$(TEST_INCLUDE_DIR) -std=c++11 -pthread -I$(ZCM_HEADERS) -L$(ZCM_LIBRARY) -lzcm -lzmq -lboost_filesystem
 	g++ -fPIC -shared $(TEST_SOURCE_DIR)/predictor.cpp -o $(TEST_BUILD_DIR)/predictor.so -I$(TEST_INCLUDE_DIR) -std=c++11 -pthread -I$(ZCM_HEADERS) -L$(ZCM_LIBRARY) -lzcm -lzmq -lboost_filesystem

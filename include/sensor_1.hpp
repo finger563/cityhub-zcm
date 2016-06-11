@@ -10,6 +10,8 @@
 
 #include "json.hpp"
 
+#include "cpprest/http_client.h"
+
 namespace zcm {
 
   /**
