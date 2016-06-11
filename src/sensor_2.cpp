@@ -6,6 +6,12 @@
 
 #include "sensor_2.hpp"
 
+using namespace utility;
+using namespace web;
+using namespace web::http;
+using namespace web::http::client;
+using namespace concurrency::streams;
+
 namespace zcm {
 
   /**
@@ -33,7 +39,36 @@ namespace zcm {
    */     
   void sensor_2::timer_function() {
     int spaces = 0;
-    publisher("sensor_2_pub")->send(std::to_string(spaces));
+
+    http_client client(U("http://129.59.105.153:9000"));
+    uri_builder builder(U("/api/devices/ch2/AvailableParkingSpaces"));
+    pplx::task<int> requestTask = client.request(methods::GET, builder.to_string())
+      .then([=](http_response response)
+	    {
+	      //std::cout << "Received response status code: " << response.status_code() << std::endl;
+	      return response.extract_string();
+	    })
+      .then([=](std::string body)
+	    {
+	      //std::cout << "Received response body: " << body << std::endl;
+	      Json::Value root;
+	      Json::Reader jsonReader;
+	      if (jsonReader.parse(body, root)) {
+		//std::cout << root << std::endl;
+		return root["value"].asInt();
+	      }
+	    });
+    try 
+      {
+	requestTask.wait();
+	spaces = requestTask.get();
+	std::cout << "Got ch2 parking spaces available: " << spaces << std::endl;
+	publisher("sensor_2_pub")->send(std::to_string(spaces));
+      }
+    catch (const std::exception &e)
+      {
+	std::cout << "Error: " << e.what();
+      }
   }
 }
 

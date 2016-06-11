@@ -45,26 +45,30 @@ namespace zcm {
     pplx::task<int> requestTask = client.request(methods::GET, builder.to_string())
       .then([=](http_response response)
 	    {
-	      std::cout << "Received response status code: " << response.status_code() << std::endl;
+	      //std::cout << "Received response status code: " << response.status_code() << std::endl;
 	      return response.extract_string();
 	    })
       .then([=](std::string body)
 	    {
-	      std::cout << "Received response body: " << body << std::endl;
+	      //std::cout << "Received response body: " << body << std::endl;
 	      Json::Value root;
 	      Json::Reader jsonReader;
-	      return root["value"].asInt();
+	      if (jsonReader.parse(body, root)) {
+		//std::cout << root << std::endl;
+		return root["value"].asInt();
+	      }
 	    });
      try 
       {
-	spaces = requestTask.wait();
+	requestTask.wait();
+	spaces = requestTask.get();
+	std::cout << "Got ch1 parking spaces available: " << spaces << std::endl;
+	publisher("sensor_1_pub")->send(std::to_string(spaces));
       }
     catch (const std::exception &e)
       {
 	std::cout << "Error: " << e.what();
       }
-     std::cout << "Got ch1 parking spaces available: " << spaces << std::endl;
-     publisher("sensor_1_pub")->send(std::to_string(spaces));
   }
 }
 
